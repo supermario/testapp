@@ -1,7 +1,7 @@
-module Backend exposing (app, init)
+module Backend exposing (..)
 
-import Lamdera exposing (ClientId, SessionId, sendToFrontend)
-import Set exposing (Set)
+import Html
+import Lamdera exposing (ClientId, SessionId)
 import Types exposing (..)
 
 
@@ -20,41 +20,20 @@ app =
 
 init : ( Model, Cmd BackendMsg )
 init =
-    ( { counter = 0, clients = Set.empty }, Cmd.none )
+    ( { message = "Hello!" }
+    , Cmd.none
+    )
 
 
 update : BackendMsg -> Model -> ( Model, Cmd BackendMsg )
 update msg model =
     case msg of
-        Noop ->
+        NoOpBackendMsg ->
             ( model, Cmd.none )
 
 
 updateFromFrontend : SessionId -> ClientId -> ToBackend -> Model -> ( Model, Cmd BackendMsg )
 updateFromFrontend sessionId clientId msg model =
     case msg of
-        ClientJoin ->
-            ( { model | clients = Set.insert clientId model.clients }
-            , sendToFrontend clientId (CounterNewValue model.counter clientId)
-            )
-
-        CounterIncremented ->
-            let
-                newCounterValue =
-                    model.counter + 1
-            in
-            ( { model | counter = newCounterValue }, broadcast model.clients (CounterNewValue newCounterValue clientId) )
-
-        CounterDecremented ->
-            let
-                newCounterValue =
-                    model.counter - 1
-            in
-            ( { model | counter = newCounterValue }, broadcast model.clients (CounterNewValue newCounterValue clientId) )
-
-
-broadcast clients msg =
-    clients
-        |> Set.toList
-        |> List.map (\clientId -> sendToFrontend clientId msg)
-        |> Cmd.batch
+        NoOpToBackend ->
+            ( model, Cmd.none )
