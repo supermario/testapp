@@ -8,6 +8,10 @@ import Types exposing (..)
 import Url
 
 
+bump =
+    1
+
+
 type alias Model =
     FrontendModel
 
