@@ -1,19 +1,19 @@
-module Types exposing (..)
+module Evergreen.V5.Types exposing (..)
 
-import Lamdera exposing (ClientId)
-import Set exposing (Set)
-
-
-type alias BackendModel =
-    { counter : Int
-    , clients : Set ClientId
-    , test : String
-    }
+import Lamdera
+import Set
 
 
 type alias FrontendModel =
     { counter : Int
     , clientId : String
+    }
+
+
+type alias BackendModel =
+    { counter : Int
+    , clients : (Set.Set Lamdera.ClientId)
+    , test : String
     }
 
 

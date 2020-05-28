@@ -20,7 +20,12 @@ app =
 
 init : ( Model, Cmd BackendMsg )
 init =
-    ( { counter = 0, clients = Set.empty }, Cmd.none )
+    ( { counter = 0
+      , clients = Set.empty
+      , test = ""
+      }
+    , Cmd.none
+    )
 
 
 update : BackendMsg -> Model -> ( Model, Cmd BackendMsg )
