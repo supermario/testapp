@@ -1,70 +1,69 @@
-module Frontend exposing (..)
+module Frontend exposing (Model, app)
 
-import Browser exposing (UrlRequest(..))
-import Browser.Navigation as Nav
-import Html
-import Lamdera
+import Html exposing (Html, text)
+import Html.Attributes exposing (style)
+import Html.Events exposing (onClick)
+import Http
+import Lamdera exposing (sendToBackend)
 import Types exposing (..)
-import Url
-
-
-bump =
-    1
 
 
 type alias Model =
     FrontendModel
 
 
+{-| Lamdera applications define 'app' instead of 'main'.
+
+Lamdera.frontend is the same as Browser.application with the
+additional update function; updateFromBackend.
+
+-}
 app =
     Lamdera.frontend
-        { init = init
-        , onUrlRequest = UrlClicked
-        , onUrlChange = UrlChanged
+        { init = \_ _ -> init
         , update = update
         , updateFromBackend = updateFromBackend
-        , subscriptions = \m -> Sub.none
-        , view = view
+        , view =
+            \model ->
+                { title = "v1"
+                , body = [ view model ]
+                }
+        , subscriptions = \_ -> Sub.none
+        , onUrlChange = \_ -> FNoop
+        , onUrlRequest = \_ -> FNoop
         }
 
 
-init : Url.Url -> Nav.Key -> ( Model, Cmd FrontendMsg )
-init url key =
-    ( { key = key, message = "Welcome to Lamdera! You're looking at the auto-generated base implementation. Check out src/Frontend.elm to start coding!" }
-    , Cmd.none
-    )
+init : ( Model, Cmd FrontendMsg )
+init =
+    ( { counter = 0, clientId = "" }, sendToBackend ClientJoin )
 
 
 update : FrontendMsg -> Model -> ( Model, Cmd FrontendMsg )
 update msg model =
     case msg of
-        UrlClicked urlRequest ->
-            case urlRequest of
-                Internal url ->
-                    ( model
-                    , Cmd.batch [ Nav.pushUrl model.key (Url.toString url) ]
-                    )
+        Increment ->
+            ( { model | counter = model.counter + 1 }, sendToBackend CounterIncremented )
 
-                External url ->
-                    ( model
-                    , Nav.load url
-                    )
+        Decrement ->
+            ( { model | counter = model.counter - 1 }, sendToBackend CounterDecremented )
 
-        UrlChanged url ->
-            ( model, Cmd.none )
-
-        NoOpFrontendMsg ->
+        FNoop ->
             ( model, Cmd.none )
 
 
 updateFromBackend : ToFrontend -> Model -> ( Model, Cmd FrontendMsg )
 updateFromBackend msg model =
-    ( model, Cmd.none )
+    case msg of
+        CounterNewValue newValue clientId ->
+            ( { model | counter = newValue, clientId = clientId }, Cmd.none )
 
 
+view : Model -> Html FrontendMsg
 view model =
-    { title = ""
-    , body =
-        [ Html.div [] [ Html.text model.message ]
+    Html.div [ style "padding" "30px" ]
+        [ Html.button [ onClick Increment ] [ text "+" ]
+        , Html.text (String.fromInt model.counter)
+        , Html.button [ onClick Decrement ] [ text "-" ]
+        , Html.div [] [ Html.text "Click me then refresh me!" ]
         ]
-    }
