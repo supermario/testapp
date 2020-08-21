@@ -1,5 +1,6 @@
 module Frontend exposing (Model, app)
 
+import Env
 import Html exposing (Html, text)
 import Html.Attributes exposing (style)
 import Html.Events exposing (onClick)
@@ -66,4 +67,5 @@ view model =
         , Html.text (String.fromInt model.counter)
         , Html.button [ onClick Decrement ] [ text "-" ]
         , Html.div [] [ Html.text "Click me then refresh me!" ]
+        , Html.text Env.dummyConfigItem
         ]
