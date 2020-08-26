@@ -68,4 +68,11 @@ view model =
         , Html.button [ onClick Decrement ] [ text "-" ]
         , Html.div [] [ Html.text "Click me then refresh me!" ]
         , Html.text Env.dummyConfigItem
+        , Html.text <|
+            case Env.mode of
+                Env.Production ->
+                    "Production"
+
+                Env.Development ->
+                    "Development"
         ]
