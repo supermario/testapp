@@ -9,6 +9,10 @@ import Lamdera exposing (sendToBackend)
 import Types exposing (..)
 
 
+version =
+    "12"
+
+
 type alias Model =
     FrontendModel
 
@@ -75,5 +79,5 @@ view model =
 
                 Env.Development ->
                     "Development"
-        , Html.text "11"
+        , Html.text version
         ]
