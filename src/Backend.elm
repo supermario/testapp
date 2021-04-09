@@ -57,6 +57,9 @@ updateFromFrontend sessionId clientId msg model =
             in
             ( { model | counter = newCounterValue }, broadcast model.clients (CounterNewValue newCounterValue clientId) )
 
+        Blah ->
+            ( model, Cmd.none )
+
 
 broadcast clients msg =
     clients

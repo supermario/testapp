@@ -1,11 +1,13 @@
 module Frontend exposing (Model, app)
 
 import Env
+import File.Select
 import Html exposing (Html, text)
 import Html.Attributes exposing (style)
 import Html.Events exposing (onClick)
 import Http
 import Lamdera exposing (sendToBackend)
+import Task
 import Types exposing (..)
 
 
@@ -53,6 +55,12 @@ update msg model =
         Decrement ->
             ( { model | counter = model.counter - 1 }, sendToBackend CounterDecremented )
 
+        ClickedSelectFile ->
+            ( model, File.Select.file [ "*" ] FileSelected )
+
+        FileSelected file ->
+            ( model, Cmd.none )
+
         FNoop ->
             ( model, Cmd.none )
 
@@ -80,4 +88,5 @@ view model =
                 Env.Development ->
                     "Development"
         , Html.text version
+        , Html.button [ onClick ClickedSelectFile ] [ text "Select file!" ]
         ]

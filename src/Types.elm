@@ -1,7 +1,11 @@
 module Types exposing (..)
 
+import Bytes exposing (Bytes)
+import File exposing (File)
 import Lamdera exposing (ClientId)
 import Set exposing (Set)
+import Task exposing (Task)
+import Time exposing (Posix)
 
 
 type alias BackendModel =
@@ -20,6 +24,8 @@ type alias FrontendModel =
 type FrontendMsg
     = Increment
     | Decrement
+    | ClickedSelectFile
+    | FileSelected File
     | FNoop
 
 
@@ -27,6 +33,7 @@ type ToBackend
     = ClientJoin
     | CounterIncremented
     | CounterDecremented
+    | Blah
 
 
 type BackendMsg
@@ -35,3 +42,7 @@ type BackendMsg
 
 type ToFrontend
     = CounterNewValue Int String
+
+
+x =
+    1
