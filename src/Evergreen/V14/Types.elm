@@ -1,4 +1,4 @@
-module Evergreen.V13.Types exposing (..)
+module Evergreen.V14.Types exposing (..)
 
 import File
 import Lamdera
@@ -22,19 +22,19 @@ type FrontendMsg
     = Increment
     | Decrement
     | ClickedSelectFile
-    | FileSelected File.File
+    | FileSelected File
     | FNoop
 
 
 type ToBackend
-    = ClientJoin
-    | CounterIncremented
+    = CounterIncremented
     | CounterDecremented
     | Blah
 
 
 type BackendMsg
-    = Noop
+    = ClientJoin Lamdera.SessionId Lamdera.ClientId
+    | Noop
 
 
 type ToFrontend
