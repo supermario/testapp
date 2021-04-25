@@ -43,7 +43,7 @@ app =
 
 init : ( Model, Cmd FrontendMsg )
 init =
-    ( { counter = 0, clientId = "" }, sendToBackend ClientJoin )
+    ( { counter = 0, clientId = "" }, Cmd.none )
 
 
 update : FrontendMsg -> Model -> ( Model, Cmd FrontendMsg )
@@ -68,8 +68,8 @@ update msg model =
 updateFromBackend : ToFrontend -> Model -> ( Model, Cmd FrontendMsg )
 updateFromBackend msg model =
     case msg of
-        CounterNewValue newValue clientId ->
-            ( { model | counter = newValue, clientId = clientId }, Cmd.none )
+        CounterNewValue newValue sessionId ->
+            ( { model | counter = newValue, clientId = sessionId }, Cmd.none )
 
 
 view : Model -> Html FrontendMsg
@@ -79,14 +79,20 @@ view model =
         , Html.text (String.fromInt model.counter)
         , Html.button [ onClick Decrement ] [ text "-" ]
         , Html.div [] [ Html.text "Click me then refresh me!" ]
-        , Html.text Env.dummyConfigItem
-        , Html.text <|
-            case Env.mode of
-                Env.Production ->
-                    "Production"
+        , d <| Html.text model.clientId
+        , d <| Html.text Env.dummyConfigItem
+        , d <|
+            Html.text <|
+                case Env.mode of
+                    Env.Production ->
+                        "Production"
 
-                Env.Development ->
-                    "Development"
-        , Html.text version
-        , Html.button [ onClick ClickedSelectFile ] [ text "Select file!" ]
+                    Env.Development ->
+                        "Development"
+        , d <| Html.text version
+        , d <| Html.button [ onClick ClickedSelectFile ] [ text "Select file!" ]
         ]
+
+
+d x =
+    Html.div [] [ x ]

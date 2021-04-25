@@ -2,7 +2,7 @@ module Types exposing (..)
 
 import Bytes exposing (Bytes)
 import File exposing (File)
-import Lamdera exposing (ClientId)
+import Lamdera exposing (..)
 import Set exposing (Set)
 import Task exposing (Task)
 import Time exposing (Posix)
@@ -30,14 +30,14 @@ type FrontendMsg
 
 
 type ToBackend
-    = ClientJoin
-    | CounterIncremented
+    = CounterIncremented
     | CounterDecremented
     | Blah
 
 
 type BackendMsg
-    = Noop
+    = ClientJoin SessionId ClientId
+    | Noop
 
 
 type ToFrontend
