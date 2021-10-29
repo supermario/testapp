@@ -1,6 +1,7 @@
 module Backend exposing (app, init)
 
 import Lamdera exposing (ClientId, SessionId, sendToFrontend)
+import RemoteData
 import Set exposing (Set)
 import Types exposing (..)
 
@@ -23,6 +24,7 @@ init =
     ( { counter = 0
       , clients = Set.empty
       , test = ""
+      , thirdPartyType = RemoteData.NotAsked
       }
     , Cmd.none
     )
@@ -33,7 +35,10 @@ update msg model =
     case msg of
         ClientJoin sessionId clientId ->
             ( { model | clients = Set.insert clientId model.clients }
-            , sendToFrontend clientId (CounterNewValue model.counter sessionId)
+            , Cmd.batch
+                [ sendToFrontend clientId (CounterNewValue model.counter sessionId)
+                , sendToFrontend clientId (TestWire model)
+                ]
             )
 
         Noop ->

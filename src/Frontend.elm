@@ -71,6 +71,9 @@ updateFromBackend msg model =
         CounterNewValue newValue sessionId ->
             ( { model | counter = newValue, clientId = sessionId }, Cmd.none )
 
+        TestWire _ ->
+            ( model, Cmd.none )
+
 
 view : Model -> Html FrontendMsg
 view model =
@@ -81,14 +84,15 @@ view model =
         , Html.div [] [ Html.text "Click me then refresh me!" ]
         , d <| Html.text model.clientId
         , d <| Html.text Env.dummyConfigItem
-        , d <|
-            Html.text <|
-                case Env.mode of
-                    Env.Production ->
-                        "Production"
 
-                    Env.Development ->
-                        "Development"
+        -- , d <|
+        --     Html.text <|
+        --         case Env.mode of
+        --             Env.Production ->
+        --                 "Production"
+        --
+        --             Env.Development ->
+        --                 "Development"
         , d <| Html.text version
         , d <| Html.button [ onClick ClickedSelectFile ] [ text "Select file!" ]
         ]

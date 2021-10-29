@@ -3,6 +3,7 @@ module Types exposing (..)
 import Bytes exposing (Bytes)
 import File exposing (File)
 import Lamdera exposing (..)
+import RemoteData exposing (..)
 import Set exposing (Set)
 import Task exposing (Task)
 import Time exposing (Posix)
@@ -12,6 +13,7 @@ type alias BackendModel =
     { counter : Int
     , clients : Set ClientId
     , test : String
+    , thirdPartyType : WebData String
     }
 
 
@@ -42,6 +44,7 @@ type BackendMsg
 
 type ToFrontend
     = CounterNewValue Int String
+    | TestWire BackendModel
 
 
 x =

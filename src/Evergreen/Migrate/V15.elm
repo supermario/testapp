@@ -1,0 +1,43 @@
+module Evergreen.Migrate.V15 exposing (..)
+
+import Evergreen.V14.Types as Old
+import Evergreen.V15.Types as New
+import Lamdera.Migrations exposing (..)
+import RemoteData
+
+
+frontendModel : Old.FrontendModel -> ModelMigration New.FrontendModel New.FrontendMsg
+frontendModel old =
+    ModelUnchanged
+
+
+backendModel : Old.BackendModel -> ModelMigration New.BackendModel New.BackendMsg
+backendModel old =
+    ModelMigrated
+        ( { counter = old.counter
+          , clients = old.clients
+          , test = old.test
+          , thirdPartyType = RemoteData.NotAsked
+          }
+        , Cmd.none
+        )
+
+
+frontendMsg : Old.FrontendMsg -> MsgMigration New.FrontendMsg New.FrontendMsg
+frontendMsg old =
+    MsgUnchanged
+
+
+toBackend : Old.ToBackend -> MsgMigration New.ToBackend New.BackendMsg
+toBackend old =
+    MsgUnchanged
+
+
+backendMsg : Old.BackendMsg -> MsgMigration New.BackendMsg New.BackendMsg
+backendMsg old =
+    MsgUnchanged
+
+
+toFrontend : Old.ToFrontend -> MsgMigration New.ToFrontend New.FrontendMsg
+toFrontend old =
+    MsgOldValueIgnored

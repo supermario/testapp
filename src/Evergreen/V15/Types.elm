@@ -1,7 +1,8 @@
-module Evergreen.V14.Types exposing (..)
+module Evergreen.V15.Types exposing (..)
 
-import File exposing (File)
+import File
 import Lamdera
+import RemoteData
 import Set
 
 
@@ -15,6 +16,7 @@ type alias BackendModel =
     { counter : Int
     , clients : Set.Set Lamdera.ClientId
     , test : String
+    , thirdPartyType : RemoteData.WebData String
     }
 
 
@@ -22,7 +24,7 @@ type FrontendMsg
     = Increment
     | Decrement
     | ClickedSelectFile
-    | FileSelected File
+    | FileSelected File.File
     | FNoop
 
 
@@ -37,5 +39,14 @@ type BackendMsg
     | Noop
 
 
+type alias BackendModel =
+    { counter : Int
+    , clients : Set.Set Lamdera.ClientId
+    , test : String
+    , thirdPartyType : RemoteData.WebData String
+    }
+
+
 type ToFrontend
     = CounterNewValue Int String
+    | TestWire BackendModel
