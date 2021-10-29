@@ -39,14 +39,6 @@ type BackendMsg
     | Noop
 
 
-type alias BackendModel =
-    { counter : Int
-    , clients : Set.Set Lamdera.ClientId
-    , test : String
-    , thirdPartyType : RemoteData.WebData String
-    }
-
-
 type ToFrontend
     = CounterNewValue Int String
     | TestWire BackendModel
