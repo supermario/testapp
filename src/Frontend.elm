@@ -88,7 +88,7 @@ view model =
             Html.text <|
                 case Env.mode of
                     Env.Production ->
-                        "Production"
+                        "Prod"
 
                     Env.Development ->
                         "Development"
