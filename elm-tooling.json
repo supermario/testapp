@@ -1,0 +1,9 @@
+{
+    "entrypoints": [
+        "./src/Frontend.elm",
+        "./src/Backend.elm"
+    ],
+    "tools": {
+        "elm-test-rs": "1.2.2"
+    }
+}
